@@ -78,11 +78,6 @@ Flip the word search from the instructions back over to the word search side and
 """
 
 import re
-from itertools import chain
-
-MUL_PATTERN = r"mul\(\d+,\d+\)"
-DO_PATTERN = r"do\(\)"
-DONOT_PATTERN = r"don't\(\)"
 
 test_input = [
     "MMMSXXMASM",
