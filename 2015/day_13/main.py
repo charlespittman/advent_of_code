@@ -41,6 +41,7 @@ def parse_input(data):
     return result
 
 
+# TODO: I'm sure this can be cleaned up
 def score_arrangement(arrangement, seat_preferences):
     total = 0
     for idx, person in enumerate(arrangement):
@@ -56,16 +57,15 @@ def score_arrangement(arrangement, seat_preferences):
     return total
 
 
-def part1(seat_preferences):
+def solve(seat_preferences, part=1):
     attendees = set([p[0] for p in seat_preferences])
-    possible_arrangements = permutations(attendees)
-    max_happiness = -1
-
-    for p in possible_arrangements:
-        current_score = score_arrangement(p, seat_preferences)
-        if current_score > max_happiness:
-            max_happiness = current_score
-    return max_happiness
+    if part == 2:
+        attendees.add("me")
+    scores = [
+        score_arrangement(arrangement, seat_preferences)
+        for arrangement in permutations(attendees)
+    ]
+    return max(scores)
 
 
 if __name__ == "__main__":
@@ -73,6 +73,7 @@ if __name__ == "__main__":
     seat_preferences = parse_input(data)
 
     print("Part 1")
-    print(part1(seat_preferences))
+    print(solve(seat_preferences, part=1))
 
     print("Part 2")
+    print(solve(seat_preferences, part=2))
