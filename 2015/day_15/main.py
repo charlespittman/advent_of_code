@@ -46,30 +46,37 @@ def parse_input(data):
     return result
 
 
-def score_cookie(ingredients: list[Ingredient], composition: tuple[int]):
+def score_cookie(ingredients: list[Ingredient], composition: tuple[int], part: int = 1):
     capacity = 0
     durability = 0
     flavor = 0
     texture = 0
     calories = 0
+
     for idx, ingredient in enumerate(ingredients):
         capacity += ingredient.capacity * composition[idx]
         durability += ingredient.durability * composition[idx]
         flavor += ingredient.flavor * composition[idx]
         texture += ingredient.texture * composition[idx]
+        calories += ingredient.calories * composition[idx]
 
-    # print(
-    #     "capacity={}, durability={}, flavor={}, texture={}".format(
-    #         capacity, durability, flavor, texture
-    #     )
-    # )
-    return max(0, capacity) * max(0, durability) * max(0, flavor) * max(0, texture)
+    total = max(0, capacity) * max(0, durability) * max(0, flavor) * max(0, texture)
+
+    if part == 2:
+        if calories == 500:
+            return total
+        else:
+            return 0
+    else:
+        return total
 
 
-def best_cookie(ingredients: list[Ingredient], amounts: list[tuple[int]]):
+def best_cookie(
+    ingredients: list[Ingredient], amounts: list[tuple[int]], part: int = 1
+):
     best = 0
     for recipe in amounts:
-        score = score_cookie(ingredients, recipe)
+        score = score_cookie(ingredients, recipe, part)
         if score > best:
             best = score
     return best
@@ -103,3 +110,4 @@ if __name__ == "__main__":
     print(best_cookie(ingredients, ingredient_amounts))
 
     print("Part 2")
+    print(best_cookie(ingredients, ingredient_amounts, part=2))
