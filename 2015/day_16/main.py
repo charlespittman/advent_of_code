@@ -40,7 +40,7 @@ def parse_input(data: list[str]):
     return result
 
 
-def solve(sues):
+def part1(sues):
     for sue in sues:
         if all(
             [
@@ -59,10 +59,31 @@ def solve(sues):
             return sue
 
 
+def part2(sues):
+    for sue in sues:
+        if all(
+            [
+                sues[sue]["akitas"] == None or sues[sue]["akitas"] == 0,
+                sues[sue]["cars"] == None or sues[sue]["cars"] == 2,
+                sues[sue]["cats"] == None or sues[sue]["cats"] > 7,
+                sues[sue]["children"] == None or sues[sue]["children"] == 3,
+                sues[sue]["goldfish"] == None or sues[sue]["goldfish"] < 5,
+                sues[sue]["perfumes"] == None or sues[sue]["perfumes"] == 1,
+                sues[sue]["pomeranians"] == None or sues[sue]["pomeranians"] < 3,
+                sues[sue]["samoyeds"] == None or sues[sue]["samoyeds"] == 2,
+                sues[sue]["trees"] == None or sues[sue]["trees"] > 3,
+                sues[sue]["vizslas"] == None or sues[sue]["vizslas"] == 0,
+            ]
+        ):
+            return sue
+
+
 if __name__ == "__main__":
     data = get_input(use_sample_data=False)
     sues = parse_input(data)
 
     print("Part 1")
-    print(solve(sues))
+    print(part1(sues))
+
     print("Part 2")
+    print(part2(sues))
