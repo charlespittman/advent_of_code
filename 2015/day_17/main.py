@@ -2,9 +2,10 @@
 # https://adventofcode.com/2015/day/17
 
 from itertools import combinations
+from math import inf
 
 
-def get_input(use_sample_data: bool = False):
+def get_input(use_sample_data: bool = False) -> list[str]:
     if use_sample_data:
         result = [
             "20",
@@ -19,18 +20,30 @@ def get_input(use_sample_data: bool = False):
     return result
 
 
-def parse_input(data: list[str]):
+def parse_input(data: list[str]) -> list[int]:
     return [int(line) for line in data]
 
 
-def part1(containers):
+def combos_equal_to_sum(
+    containers: list[int], total: int = 150
+) -> list[tuple[int, ...]]:
     result = []
     for x in range(1, len(containers) + 1):
         combos = combinations(containers, x)
         for combo in combos:
-            if sum(combo) == (25 if use_sample_data else 150):
+            if sum(combo) == (25 if use_sample_data else total):
                 result.append(combo)
     return result
+
+
+def smallest_set_of_containers(
+    containers: list[tuple[int, ...]]
+) -> list[tuple[int, ...]]:
+    min_length = inf
+    for c in containers:
+        if len(c) <= min_length:
+            min_length = len(c)
+    return [c for c in containers if len(c) == min_length]
 
 
 if __name__ == "__main__":
@@ -39,6 +52,9 @@ if __name__ == "__main__":
     containers = parse_input(data)
 
     print("Part 1")
-    print(len(part1(containers)))
+    # print(combos_equal_to_sum(containers))
+    print(len(combos_equal_to_sum(containers)))
 
     print("Part 2")
+    # print(smallest_set_of_containers(combos_equal_to_sum(containers)))
+    print(len(smallest_set_of_containers(combos_equal_to_sum(containers))))
