@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 # https://adventofcode.com/2015/day/18
 
+from math import sqrt
+
 
 def get_input(use_sample_data: bool = False) -> list[str]:
     if use_sample_data:
@@ -70,10 +72,26 @@ def light_next_step(grid: dict[tuple[int, int], str], pos: tuple[int, int]) -> b
     return next_light_on
 
 
-def grid_next_step(grid: dict[tuple[int, int], str]) -> dict[tuple[int, int], str]:
+def grid_next_step(
+    grid: dict[tuple[int, int], str], part: int = 1
+) -> dict[tuple[int, int], str]:
     next_grid = {}
+    grid_length = int(sqrt(len(grid)))  # grid should be square
+
+    if part == 2:
+        grid[(0, 0)] = "#"
+        grid[(0, grid_length - 1)] = "#"
+        grid[(grid_length - 1, 0)] = "#"
+        grid[(grid_length - 1, grid_length - 1)] = "#"
+
     for pos in grid:
         next_grid[pos] = "#" if light_next_step(grid, pos) else "."
+
+    if part == 2:
+        next_grid[(0, 0)] = "#"
+        next_grid[(0, grid_length - 1)] = "#"
+        next_grid[(grid_length - 1, 0)] = "#"
+        next_grid[(grid_length - 1, grid_length - 1)] = "#"
     return next_grid
 
 
@@ -89,11 +107,16 @@ if __name__ == "__main__":
     use_sample_data = False
     data = get_input(use_sample_data)
     grid = parse_input(data)
+    steps = 5 if use_sample_data else 100
 
     print("Part 1")
     grid_1 = grid
-    for x in range(100):
+    for x in range(steps):
         grid_1 = grid_next_step(grid_1)
     print(count_lights_on(grid_1))
 
     print("Part 2")
+    grid_2 = grid
+    for x in range(steps):
+        grid_2 = grid_next_step(grid_2, part=2)
+    print(count_lights_on(grid_2))
